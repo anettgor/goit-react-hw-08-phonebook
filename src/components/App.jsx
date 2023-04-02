@@ -12,48 +12,23 @@ export const App = () => {
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    const loadedContacts = load('contacts');
-    if (loadedContacts) {
-      setContacts(loadedContacts);
-      console.log('%c first effect loadContacts', 'background-color: lavender');
+    const parsedContacts = JSON.parse(localStorage.getItem('contacts'));
+    if (parsedContacts) {
+      setContacts(parsedContacts);
     }
   }, []);
 
   useEffect(() => {
-    if (contacts !== []) {
-      setContacts(contacts);
-      save('contacts', contacts);
-      console.log('%c update effect', 'background-color: lightpink');
-    }
-    // return;
+    localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
-
-  const save = (key, value) => {
-    try {
-      const serializedState = JSON.stringify(value);
-      localStorage.setItem(key, serializedState);
-    } catch (error) {
-      console.error('Set state error: ', error.message);
-    }
-  };
-
-  const load = key => {
-    try {
-      const serializedState = localStorage.getItem(key);
-      return serializedState === null ? undefined : JSON.parse(serializedState);
-    } catch (error) {
-      console.error('Get state error: ', error.message);
-    }
-  };
 
   const handleSubmit = e => {
     e.preventDefault();
     const form = e.currentTarget;
     const name = form.elements.name.value;
     const number = form.elements.number.value;
-    const id = nanoid();
     const newContact = {
-      id: id,
+      id: nanoid(),
       name: name,
       number: number,
     };
@@ -70,25 +45,18 @@ export const App = () => {
       );
     } else {
       Notify.success(`Contact ${name} successfully added`);
-      setContacts(prevContacts => [...prevContacts, newContact]);
+      setContacts([...contacts, newContact]);
       form.reset();
     }
   };
 
-  const deleteContact = e => {
-    e.preventDefault();
-    const contactsNew = [...contacts]; // TODO or [...contacts]
-    const index = contactsNew.findIndex(contact => contact.id === e.target.id);
-    contactsNew.splice(index, 1);
-    setContacts(contactsNew);
+  const deleteContact = id => {
+    setContacts(contacts.filter(contact => contact.id !== id));
     Notify.info('Contact Successfully Deleted');
   };
 
   const findContact = e => {
-    setFilter(e.target.value.toLowerCase());
-    contacts.filter(contact => {
-      return contact.name.toLowerCase().includes(filter.toLowerCase());
-    });
+    setFilter(e.target.value.toLowerCase().trim());
   };
 
   return (
