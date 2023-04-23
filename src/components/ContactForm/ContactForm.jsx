@@ -1,11 +1,11 @@
 import css from './ContactForm.module.css';
-import { loadContacts } from './../../redux/selectors';
+import { getContacts } from './../../redux/selectors';
 import { addContact } from './../../redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from 'nanoid';
 import { Notify } from 'notiflix';
 export const AddContact = () => {
-  const contacts = useSelector(loadContacts);
+  const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
 
   const handleSubmit = e => {
