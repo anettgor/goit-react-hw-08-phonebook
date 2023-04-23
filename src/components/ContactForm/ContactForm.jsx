@@ -1,7 +1,41 @@
-import PropTypes from 'prop-types';
 import css from './ContactForm.module.css';
+import { loadContacts } from './../../redux/selectors';
+import { addContact } from './../../redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { nanoid } from 'nanoid';
+import { Notify } from 'notiflix';
+export const AddContact = () => {
+  const contacts = useSelector(loadContacts);
+  const dispatch = useDispatch();
 
-export const AddContact = ({ handleSubmit }) => {
+  const handleSubmit = e => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const name = form.elements.name.value;
+    const number = form.elements.number.value;
+    const newContact = {
+      id: nanoid(),
+      name: name,
+      number: number,
+    };
+
+    if (
+      contacts.find(
+        contact => contact.name.toLowerCase() === name.toLowerCase()
+      )
+    ) {
+      Notify.info(`Contact ${name} is already in your contact list`);
+    } else if (contacts.find(contact => contact.number === number)) {
+      Notify.info(
+        `Contact ${number} is already in your contact list under a different name`
+      );
+    } else {
+      Notify.success(`Contact ${name} successfully added`);
+      dispatch(addContact(newContact));
+      form.reset();
+    }
+  };
+
   return (
     <form className={css.formContainer} onSubmit={handleSubmit}>
       <label className={css.form}>
@@ -29,8 +63,4 @@ export const AddContact = ({ handleSubmit }) => {
       <button type="submit">Add Contact</button>
     </form>
   );
-};
-
-AddContact.propTypes = {
-  handleSubmit: PropTypes.func,
 };

@@ -1,6 +1,13 @@
-import PropTypes from 'prop-types';
 import css from './../ContactForm/ContactForm.module.css';
-export const Filter = ({ findContact }) => {
+import { useDispatch } from 'react-redux';
+import { setStatusFilter } from './../../redux/actions';
+export const Filter = () => {
+  const dispatch = useDispatch();
+
+  const handleChange = e => {
+    dispatch(setStatusFilter(e.target.value));
+  };
+
   return (
     <>
       <label className={css.form}>
@@ -9,13 +16,9 @@ export const Filter = ({ findContact }) => {
           type="text"
           name="find contact"
           placeholder="Please enter contact's name"
-          onInput={findContact}
+          onInput={handleChange}
         ></input>
       </label>
     </>
   );
-};
-
-Filter.propTypes = {
-  findContact: PropTypes.func,
 };
