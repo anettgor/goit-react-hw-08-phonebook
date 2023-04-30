@@ -15,7 +15,7 @@ export const ContactForm = () => {
     const number = form.elements.number.value;
     const newContact = {
       name: name,
-      number: number,
+      phone: number,
     };
     if (
       contacts.find(
