@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-// Importujemy operację
 import { fetchContacts, addContact, deleteContact } from './operations';
 const handleRejected = (state, action) => {
   state.error = action.payload;

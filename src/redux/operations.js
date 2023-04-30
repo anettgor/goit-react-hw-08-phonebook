@@ -1,5 +1,3 @@
-// import { setStatusFilter } from './actions';
-// import { createReducer } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
@@ -43,12 +41,3 @@ export const deleteContact = createAsyncThunk(
     }
   }
 );
-
-//delete
-// const filterInitialState = '';
-
-// export const filterReducer = createReducer(filterInitialState, {
-//   [setStatusFilter]: (state, action) => {
-//     return (state = action.payload);
-//   },
-// });
