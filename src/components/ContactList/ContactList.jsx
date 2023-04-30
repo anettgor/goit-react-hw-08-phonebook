@@ -1,19 +1,17 @@
 import css from './ContactList.module.css';
-import { removeContact } from './../../redux/actions';
+
+import { deleteContact } from './../../redux/operations';
 import { useSelector, useDispatch } from 'react-redux';
-import { getValue, getContacts } from './../../redux/selectors';
+import { getStatusFilter, getContacts } from './../../redux/selectors';
+
 export const ContactList = () => {
   // const contacts = useSelector(loadContacts);
-  const filter = useSelector(getValue);
+  const filter = useSelector(getStatusFilter);
 
   const filteredContacts = useSelector(getContacts).filter(contact => {
     return contact.name.toLowerCase().includes(filter.toLowerCase());
   });
   const dispatch = useDispatch();
-
-  const deleteContact = id => {
-    dispatch(removeContact(id));
-  };
 
   return (
     <ul className={css.items}>
@@ -21,17 +19,17 @@ export const ContactList = () => {
         return (
           <li key={contact.id}>
             <p>
-              {' '}
-              <b>Name: </b> {contact.name}{' '}
+              <b>Name: </b>
+              {contact.name}
             </p>
             <p>
               <b>Number: </b>
-              {contact.number}
+              {contact.phone}
             </p>
             <button
               type="button"
               id={contact.id}
-              onClick={() => deleteContact(contact.id)}
+              onClick={() => dispatch(deleteContact(contact.id))}
             >
               Delete
             </button>

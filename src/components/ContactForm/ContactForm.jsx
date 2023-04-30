@@ -1,24 +1,22 @@
 import css from './ContactForm.module.css';
 import { getContacts } from './../../redux/selectors';
-import { addContact } from './../../redux/actions';
+import { addContact } from './../../redux/operations';
 import { useDispatch, useSelector } from 'react-redux';
-import { nanoid } from 'nanoid';
 import { Notify } from 'notiflix';
-export const AddContact = () => {
+export const ContactForm = () => {
   const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
 
   const handleSubmit = e => {
     e.preventDefault();
+
     const form = e.currentTarget;
     const name = form.elements.name.value;
     const number = form.elements.number.value;
     const newContact = {
-      id: nanoid(),
       name: name,
       number: number,
     };
-
     if (
       contacts.find(
         contact => contact.name.toLowerCase() === name.toLowerCase()

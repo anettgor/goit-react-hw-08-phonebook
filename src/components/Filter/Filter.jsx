@@ -1,6 +1,6 @@
 import css from './../ContactForm/ContactForm.module.css';
 import { useDispatch } from 'react-redux';
-import { setStatusFilter } from './../../redux/actions';
+import { setStatusFilter } from './../../redux/filterSlice';
 export const Filter = () => {
   const dispatch = useDispatch();
 
