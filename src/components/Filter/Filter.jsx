@@ -1,6 +1,8 @@
-import css from './../ContactForm/ContactForm.module.css';
 import { useDispatch } from 'react-redux';
-import { setStatusFilter } from './../../redux/filterSlice';
+import { Box } from '@mui/material';
+import TextField from '@mui/material/TextField';
+
+import { setStatusFilter } from './../../redux/phonebook/filterSlice';
 export const Filter = () => {
   const dispatch = useDispatch();
 
@@ -9,16 +11,30 @@ export const Filter = () => {
   };
 
   return (
-    <>
-      <label className={css.form}>
-        Find contacts by name
-        <input
-          type="text"
-          name="find contact"
-          placeholder="Please enter contact's name"
-          onInput={handleChange}
-        ></input>
-      </label>
-    </>
+    <Box
+      sx={{
+        display: 'flex',
+        gap: '25px',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        mt: '5%',
+        color: '#fff',
+      }}
+    >
+      <div>
+        <h1>Your contacts</h1>
+        <h3>Find contacts by name </h3>
+      </div>
+      <TextField
+        sx={{ width: '80vw', maxWidth: 500 }}
+        id="outlined-controlled"
+        label="Enter contact's name"
+        variant="outlined"
+        type="text"
+        name="find contact"
+        onInput={handleChange}
+      />
+    </Box>
   );
 };

@@ -1,6 +1,8 @@
-import css from './ContactForm.module.css';
-import { getContacts } from './../../redux/selectors';
-import { addContact } from './../../redux/operations';
+import { Box, Button } from '@mui/material';
+import TextField from '@mui/material/TextField';
+
+import { getContacts } from './../../redux/phonebook/selectors';
+import { addContact } from './../../redux/phonebook/operations';
 import { useDispatch, useSelector } from 'react-redux';
 import { Notify } from 'notiflix';
 export const ContactForm = () => {
@@ -14,10 +16,12 @@ export const ContactForm = () => {
     const name = form.elements.name.value;
     const number = form.elements.number.value;
     const newContact = {
-      name: name,
-      phone: number,
+      name,
+      number,
     };
-    if (
+    if (name.trim() === '' || number.trim() === '') {
+      Notify.info('Please do not leave the contact field empty');
+    } else if (
       contacts.find(
         contact => contact.name.toLowerCase() === name.toLowerCase()
       )
@@ -31,34 +35,61 @@ export const ContactForm = () => {
       Notify.success(`Contact ${name} successfully added`);
       dispatch(addContact(newContact));
       form.reset();
+      console.log(newContact);
     }
   };
 
   return (
-    <form className={css.formContainer} onSubmit={handleSubmit}>
-      <label className={css.form}>
-        Name
-        <input
-          type="text"
-          name="name"
-          placeholder="Please enter a name"
-          pattern="^[a-zA-Z]+(([' -][a-zA-Z])?[a-zA-Z]*)*$"
-          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          required
-        />
-      </label>
-      <label className={css.form}>
-        Phone Number
-        <input
-          type="tel"
-          name="number"
-          placeholder="Please enter a pnone number"
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          required
-        />
-      </label>
-      <button type="submit">Add Contact</button>
-    </form>
+    <Box
+      component="form"
+      autoComplete="off"
+      onSubmit={handleSubmit}
+      sx={{
+        display: 'flex',
+        gap: '25px',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        mt: '10%',
+        color: '#fff',
+      }}
+    >
+      <h1>Add new contact</h1>
+      <TextField
+        sx={{ width: '80vw', maxWidth: 500 }}
+        id="outlined-controlled"
+        label="Name"
+        variant="outlined"
+        type="text"
+        name="name"
+      />
+      <TextField
+        sx={{ width: '80vw', maxWidth: 500 }}
+        id="outlined-controlled"
+        label="Number"
+        variant="outlined"
+        type="tel"
+        name="number"
+      />
+      <Button
+        sx={{
+          height: 45,
+          width: 200,
+          mt: '20px',
+          color: '#fff',
+          backgroundColor: '#209eec',
+          borderRadius: '25px',
+
+          '&:hover:not(.active)': {
+            color: '#fff',
+            backgroundColor: '#027ecc',
+          },
+        }}
+        type="submit"
+        variant="contained"
+      >
+        Add contact
+      </Button>
+    </Box>
   );
 };
