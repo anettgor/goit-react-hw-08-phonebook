@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import { useAuth } from 'hooks';
 import { ListItem, Box } from '@mui/material';
+import { useAuth } from 'hooks';
 
 export const Navigation = () => {
   const { isLoggedIn } = useAuth();
